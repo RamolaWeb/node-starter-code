@@ -3,6 +3,11 @@ import express from 'express'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import Sequelize from 'sequelize'
+import passport from 'passport'
+
+// Code to import the passport strategy
+import { jwtStrategy, localStrategy } from './utils'
 
 import indexRouter from './routes/index'
 import usersRouter from './routes/users'
@@ -27,6 +32,22 @@ app.use((req, res, next) => {
   next(createError(404))
 })
 
+// initialise passport and its strategy
+app.use(passport.initialize())
+passport.use(localStrategy)
+passport.use(jwtStrategy)
+
+// code to integrate the database connection
+const sequilize = new Sequelize('mysql://root:root@localHost:3306/startercode')
+sequilize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully ')
+  })
+  .catch(err => {
+    console.error('Unable to connect to database')
+  })
+
 // error handler
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
@@ -39,3 +60,6 @@ app.use((err, req, res, next) => {
 })
 
 export default app
+export {
+  sequilize,
+}
