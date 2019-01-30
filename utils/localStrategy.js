@@ -1,12 +1,13 @@
-import Strategy from 'passport-local'
+import local from 'passport-local'
 import brypt from 'bcrypt'
 
-import { User } from '../models'
+import db from '../models'
 import { ERROR_MESSAGE } from './constant'
 
-const { LocalStrategy } = Strategy
+const { User } = db
+const { Strategy } = local
 
-const localStrategy = new LocalStrategy(async (email, password, done) => {
+const localStrategy = new Strategy(async (email, password, done) => {
   try {
     const user = await User
       .findOne(
