@@ -6,9 +6,6 @@ import logger from 'morgan'
 import Sequelize from 'sequelize'
 import passport from 'passport'
 
-// Code to import the passport strategy
-import { jwtStrategy, localStrategy } from './utils'
-
 import indexRouter from './routes/index'
 import usersRouter from './routes/users'
 
@@ -34,9 +31,6 @@ app.use((req, res, next) => {
 
 // initialise passport and its strategy
 app.use(passport.initialize())
-passport.use(localStrategy)
-passport.use(jwtStrategy)
-
 // code to integrate the database connection
 const sequilize = new Sequelize('mysql://root:root@localHost:3306/startercode')
 sequilize

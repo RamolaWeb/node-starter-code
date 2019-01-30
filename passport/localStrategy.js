@@ -2,7 +2,7 @@ import local from 'passport-local'
 import brypt from 'bcrypt'
 
 import db from '../models'
-import { ERROR_MESSAGE } from './constant'
+import { ERROR_MESSAGE } from '../utils'
 
 const { User } = db
 const { Strategy } = local
@@ -29,6 +29,4 @@ const localStrategy = new Strategy(async (email, password, done) => {
   }
 })
 
-export {
-  localStrategy,
-}
+export default localStrategy

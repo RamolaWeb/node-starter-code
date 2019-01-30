@@ -28,6 +28,4 @@ const jwtStrategy = new Strategy(options, async (payload, done) => {
   }
 })
 
-export {
-  jwtStrategy,
-}
+export default jwtStrategy
