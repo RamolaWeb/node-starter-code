@@ -7,7 +7,6 @@
 import d from 'debug'
 import http from 'http'
 import app from '../app'
-import models from '../models'
 
 const debug = d('nodestartercode:server')
 
@@ -84,8 +83,6 @@ const onListening = () => {
   debug(`Listening on ${bind}`)
 }
 
-models.sequelize.sync().then(() => {
-  server.listen(port)
-  server.on('error', onError)
-  server.on('listening', onListening)
-})
+server.listen(port)
+server.on('error', onError)
+server.on('listening', onListening)

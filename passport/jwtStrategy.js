@@ -1,26 +1,19 @@
-import JWTStrategy from 'passport-jwt'
+import { Strategy, ExtractJwt } from 'passport-jwt'
 
-import db from '../models'
-
-const { User } = db
-const { Strategy, ExtractJwt } = JWTStrategy
+import { User } from '../models'
 
 const options = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
   secretOrKey: process.env.PRIVATE_KEY || 'private',
-  issuer: process.env.ISSUER || 'issuer',
-  audience: process.env.AUDIENCE || 'auidence',
+  issuer: process.env.ISSUER || 'sa',
 }
 
 const jwtStrategy = new Strategy(options, async (payload, done) => {
   try {
-    const user = await User
-      .findOne(
-        { where: {
-          id: payload.id,
-        } },
-      )
-    if (!user) return done(null, false)
+    const user = await User.findById(payload.id)
+    if (!user) {
+      return done(null, false)
+    }
     return done(null, user)
   }
   catch (e) {

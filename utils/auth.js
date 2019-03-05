@@ -15,7 +15,6 @@ export const generateToken = (payload, { issuer, subject }, time = '30d') => {
     issuer,
     subject,
     expiresIn: time,
-    algorithm: 'RSA256',
   }
   return jwt.sign(payload, privateKey, signingOption)
 }
@@ -32,7 +31,6 @@ export const verifyToken = (token, { issuer, subject }, time = '30d') => {
     issuer,
     subject,
     expiresIn: time,
-    algorithm: ['RSA256'],
   }
   try {
     return jwt.verify(token, publicKey, verifyingOption)

@@ -3,11 +3,13 @@ import express from 'express'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
-import Sequelize from 'sequelize'
 import passport from 'passport'
+import mongoose from 'mongoose'
 
 import indexRouter from './routes/index'
 import usersRouter from './routes/users'
+
+import './passport'
 
 const app = express()
 
@@ -22,7 +24,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/users', passport.authenticate('jwt', { session: false }), usersRouter)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -31,16 +33,11 @@ app.use((req, res, next) => {
 
 // initialise passport and its strategy
 app.use(passport.initialize())
-// code to integrate the database connection
-const sequilize = new Sequelize('mysql://root:root@localHost:3306/startercode')
-sequilize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully ')
-  })
-  .catch(err => {
-    console.error('Unable to connect to database')
-  })
+
+// code to initialise the database
+const defaultDBUrl = 'mongodb://127.0.0.1/node-starter-code'
+mongoose.connect(process.env.DB_URL || defaultDBUrl)
+
 
 // error handler
 app.use((err, req, res, next) => {
@@ -54,6 +51,3 @@ app.use((err, req, res, next) => {
 })
 
 export default app
-export {
-  sequilize,
-}
