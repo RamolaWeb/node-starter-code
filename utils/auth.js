@@ -39,3 +39,12 @@ export const verifyToken = (token, { issuer, subject }, time = '30d') => {
     throw err
   }
 }
+
+/**
+ * This function is used to extract the user id from the jwt token
+ */
+export const decodeToken = token => {
+  const decode = jwt.decode(token, { complete: true })
+  const { id } = decode.payload
+  return id
+}
