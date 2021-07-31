@@ -50,7 +50,6 @@ export const registerUser = async (req, res) => {
 
 // This user is used to login the user
 export const loginUser =  (req, res, next) => {
-  console.log(next)
   passport.authenticate('local',
     { session: false },
     (error, user) => {
