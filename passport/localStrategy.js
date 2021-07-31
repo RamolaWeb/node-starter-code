@@ -7,7 +7,6 @@ import { ERROR_MESSAGE } from '../utils'
 const localStrategy = new LocalStrategy(
   async (username, password, done) => {
     try {
-      console.log(username)
       const user = await User
         .findOne(
           { email: username },
@@ -15,9 +14,7 @@ const localStrategy = new LocalStrategy(
       if (!user) return done(null, false)
       const isVerified = await brypt.compare(password, user.password)
       if (isVerified) {
-        return done(null, {
-          id: user.id,
-        })
+        return done(null, user)
       }
       return done(ERROR_MESSAGE.INVALID_USERNAME_PASSWORD, false)
     }

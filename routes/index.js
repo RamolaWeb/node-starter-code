@@ -36,7 +36,6 @@ router.post('/register', async (req, res, next) => {
 })
 
 router.post('/login', (req, res, next) => {
-  console.log('getting', req.body)
   passport.authenticate('local',
     { session: false },
     (error, user) => {
